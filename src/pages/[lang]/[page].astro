@@ -7,7 +7,7 @@ import { getContent } from '../../content/site';
 import { publishedLocales, routes, type PageKey, type PublishedLocale } from '../../i18n/config';
 
 export function getStaticPaths() {
-  const pageKeys = ['services', 'work', 'method', 'privacy', 'legal'] as const;
+  const pageKeys = ['privacy', 'legal'] as const;
   return publishedLocales.flatMap((lang) => pageKeys.map((pageKey) => ({
     params: { lang, page: routes[lang][pageKey].split('/').filter(Boolean)[1] },
     props: { locale: lang, pageKey },

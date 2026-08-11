@@ -775,3 +775,139 @@
 @keyframes page-out { to { opacity: 0; } }
 @keyframes page-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes reduced-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* Restrained one-page presentation */
+.one-page { overflow: clip; }
+.one-hero {
+  display: flex;
+  min-height: 47rem;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: 10rem 6rem;
+}
+.one-hero h1 {
+  max-width: 70rem;
+  margin: 0;
+  font-family: theme('fontFamily.display');
+  font-size: clamp(4.25rem, 9vw, 8.75rem);
+  font-weight: 700;
+  letter-spacing: -0.065em;
+  line-height: 0.9;
+}
+.one-hero > p {
+  max-width: 43rem;
+  margin: theme('spacing.s6') 0 0;
+  font-size: clamp(1.125rem, 1.7vw, 1.5rem);
+  line-height: 1.45;
+}
+.one-actions { display: flex; flex-wrap: wrap; align-items: center; gap: theme('spacing.s3'); margin-top: theme('spacing.s6'); }
+.one-actions .button { min-height: 3.75rem; padding-inline: theme('spacing.s5'); }
+.button-secondary { border: 1px solid theme('colors.ink'); background: transparent; color: theme('colors.ink'); }
+.button-secondary:hover { background: theme('colors.mist'); }
+.button-light { background: theme('colors.canvas'); color: theme('colors.ink'); }
+.one-text-link { color: theme('colors.canvas'); font-weight: 600; text-underline-offset: 0.35rem; }
+
+.one-audit {
+  display: grid;
+  align-items: center;
+  gap: theme('spacing.s6');
+  padding-block: theme('spacing.s7');
+  border-top: 1px solid color-mix(in srgb, theme('colors.ink') 22%, transparent);
+  grid-template-columns: minmax(14rem, 0.65fr) minmax(0, 1.35fr);
+}
+.one-section-heading h2,
+.one-section > h2,
+.one-work h2,
+.one-final h2 {
+  margin: 0;
+  font-family: theme('fontFamily.display');
+  font-size: clamp(2.5rem, 4.5vw, 5rem);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  line-height: 0.95;
+}
+.one-section-heading p { max-width: 27rem; margin: theme('spacing.s3') 0 0; line-height: 1.55; }
+
+.one-audit .website-check,
+.one-audit .website-check-compact { min-height: 5.75rem; border-radius: 1.25rem; }
+.one-audit .check-form-content,
+.one-audit .website-check-compact .check-form-content { min-height: 5.625rem; }
+.one-audit .check-url-stage,
+.one-audit .website-check-compact .check-url-stage { grid-template-columns: minmax(0, 1fr) auto; padding: 0.5rem; }
+.one-audit .url-field-wrap input { min-height: 4.5rem; padding-inline: theme('spacing.s4'); font-size: clamp(1.15rem, 2vw, 1.6rem); }
+.one-audit .placeholder-cycle { left: theme('spacing.s4'); font-size: clamp(1.15rem, 2vw, 1.6rem); }
+.one-audit .check-next,
+.one-audit .website-check-compact .check-next { width: auto; min-width: 10rem; min-height: 4.5rem; }
+.one-audit .check-details-stage { padding: 0.5rem; }
+.one-audit .website-check.has-details { min-height: 9.5rem; }
+.one-audit .website-check.has-details .check-form-content { min-height: 9.375rem; }
+.one-audit .website-check-compact .detail-fields { grid-template-columns: 1fr 1fr auto; }
+.one-audit .check-error { position: absolute; top: 100%; left: 0; }
+
+.one-section { padding-block: clamp(6rem, 10vw, 10rem); }
+.one-service-grid { display: grid; margin-top: theme('spacing.s7'); border-top: 1px solid theme('colors.ink'); grid-template-columns: repeat(3, 1fr); }
+.one-service-grid article { min-height: 18rem; padding: theme('spacing.s5'); border-right: 1px solid color-mix(in srgb, theme('colors.ink') 20%, transparent); }
+.one-service-grid article:last-child { border-right: 0; }
+.one-service-grid span,
+.one-process > li > span,
+.one-case-copy > span { color: color-mix(in srgb, theme('colors.ink') 55%, transparent); font-size: theme('fontSize.utility'); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.one-service-grid h3 { max-width: 15rem; margin: theme('spacing.s8') 0 theme('spacing.s3'); font-family: theme('fontFamily.display'); font-size: 1.75rem; line-height: 1.05; }
+.one-service-grid p { max-width: 18rem; margin: 0; line-height: 1.55; }
+
+.one-work { padding-block: clamp(6rem, 10vw, 10rem); background: theme('colors.mist'); }
+.one-work-grid { display: grid; gap: theme('spacing.s5'); margin-top: theme('spacing.s7'); grid-template-columns: 1.25fr 0.75fr; }
+.one-case { overflow: hidden; border-radius: theme('borderRadius.panel'); background: theme('colors.canvas'); }
+.one-case-visual { min-height: 26rem; padding: theme('spacing.s6'); }
+.one-case-site .one-case-visual { background: theme('colors.action'); }
+.one-case-campaign .one-case-visual { background: theme('colors.ink'); }
+.demo-browser { position: relative; height: 100%; min-height: 20rem; overflow: hidden; border-radius: 1rem; background: theme('colors.canvas'); padding: theme('spacing.s6'); }
+.demo-browser > span { display: block; width: 0.75rem; height: 0.75rem; border-radius: 50%; background: theme('colors.marker'); box-shadow: 1.25rem 0 0 theme('colors.mist'), 2.5rem 0 0 theme('colors.ink'); }
+.demo-browser strong { display: block; margin-top: theme('spacing.s8'); font-family: theme('fontFamily.display'); font-size: clamp(2.5rem, 5vw, 5.5rem); letter-spacing: -0.06em; }
+.demo-browser i { display: block; width: 72%; height: 0.65rem; margin-top: theme('spacing.s3'); background: theme('colors.mist'); }
+.demo-browser i:last-child { width: 48%; }
+.demo-campaign { display: grid; height: 100%; min-height: 20rem; grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr auto; }
+.demo-campaign strong { grid-column: 1 / -1; align-self: center; color: theme('colors.canvas'); font-family: theme('fontFamily.display'); font-size: clamp(3rem, 7vw, 7rem); letter-spacing: -0.06em; }
+.demo-campaign span { padding-top: theme('spacing.s3'); border-top: 1px solid color-mix(in srgb, theme('colors.canvas') 35%, transparent); color: theme('colors.canvas'); }
+.one-case-copy { padding: theme('spacing.s5'); }
+.one-case-copy h3 { margin: theme('spacing.s3') 0 theme('spacing.s2'); font-family: theme('fontFamily.display'); font-size: 2rem; }
+.one-case-copy p { max-width: 30rem; margin: 0; line-height: 1.5; }
+
+.one-process { margin: theme('spacing.s7') 0 0; padding: 0; list-style: none; border-top: 1px solid theme('colors.ink'); }
+.one-process li { display: grid; min-height: 9rem; align-items: center; gap: theme('spacing.s5'); padding-block: theme('spacing.s4'); border-bottom: 1px solid color-mix(in srgb, theme('colors.ink') 20%, transparent); grid-template-columns: 4rem 1fr; }
+.one-process h3 { margin: 0; font-family: theme('fontFamily.display'); font-size: clamp(1.75rem, 3vw, 2.75rem); }
+.one-process p { margin: theme('spacing.s1') 0 0; }
+
+.one-final { padding-block: clamp(6rem, 11vw, 11rem); background: theme('colors.action'); color: theme('colors.canvas'); }
+.one-final h2 { max-width: 55rem; font-size: clamp(3.5rem, 8vw, 8rem); }
+.one-final > .shell > p { max-width: 38rem; margin: theme('spacing.s5') 0 0; font-size: 1.25rem; line-height: 1.5; }
+
+@media (max-width: 52rem) {
+  .one-hero { min-height: auto; padding-block: 10rem 5rem; }
+  .one-hero h1 { font-size: clamp(3.75rem, 15vw, 6.5rem); }
+  .one-audit { grid-template-columns: 1fr; padding-block: theme('spacing.s6'); }
+  .one-service-grid { grid-template-columns: 1fr; }
+  .one-service-grid article { min-height: auto; padding-inline: 0; border-right: 0; border-bottom: 1px solid color-mix(in srgb, theme('colors.ink') 20%, transparent); }
+  .one-service-grid h3 { margin-top: theme('spacing.s5'); }
+  .one-work-grid { grid-template-columns: 1fr; }
+  .one-case-visual { min-height: 21rem; padding: theme('spacing.s4'); }
+}
+
+@media (max-width: 38rem) {
+  .one-actions { align-items: stretch; flex-direction: column; }
+  .one-actions .button { width: 100%; }
+  .one-audit .website-check,
+  .one-audit .website-check-compact { min-height: 10.5rem; }
+  .one-audit .check-form-content,
+  .one-audit .website-check-compact .check-form-content { min-height: 10.375rem; }
+  .one-audit .check-url-stage,
+  .one-audit .website-check-compact .check-url-stage { grid-template-columns: 1fr; }
+  .one-audit .check-next,
+  .one-audit .website-check-compact .check-next { width: 100%; min-height: 3.75rem; }
+  .one-audit .website-check.has-details { min-height: 19rem; }
+  .one-audit .website-check.has-details .check-form-content { min-height: 18.875rem; }
+  .one-audit .website-check-compact .detail-fields { grid-template-columns: 1fr; }
+  .one-section { padding-block: 5.5rem; }
+  .one-case-visual { min-height: 17rem; }
+  .demo-browser, .demo-campaign { min-height: 13rem; }
+  .one-process li { grid-template-columns: 3rem 1fr; }
+}

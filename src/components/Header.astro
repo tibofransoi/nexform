@@ -11,9 +11,9 @@ const { locale, page } = Astro.props;
 const copy = getContent(locale);
 const auditHref = `${routeFor(locale, 'home')}#website-check`;
 const navItems = [
-  { key: 'work' as const, label: copy.nav.work },
-  { key: 'services' as const, label: copy.nav.services },
-  { key: 'method' as const, label: copy.nav.method },
+  { key: 'work' as const, label: copy.nav.work, href: `${routeFor(locale, 'home')}#work` },
+  { key: 'services' as const, label: copy.nav.services, href: `${routeFor(locale, 'home')}#services` },
+  { key: 'method' as const, label: copy.nav.method, href: `${routeFor(locale, 'home')}#method` },
 ];
 ---
 
@@ -25,7 +25,7 @@ const navItems = [
 
     <nav class="desktop-nav" aria-label="Primary navigation">
       {navItems.map((item) => (
-        <a class:list={['nav-link', page === item.key && 'is-active']} href={routeFor(locale, item.key)} aria-current={page === item.key ? 'page' : undefined}>
+        <a class="nav-link" href={item.href}>
           {item.label}
         </a>
       ))}
@@ -60,7 +60,7 @@ const navItems = [
   <div class="mobile-menu" id="mobile-menu" aria-hidden="true" inert data-mobile-menu>
     <nav aria-label="Mobile navigation">
       {navItems.map((item, index) => (
-        <a href={routeFor(locale, item.key)} style={`--menu-index:${index}`}>{item.label}</a>
+        <a href={item.href} style={`--menu-index:${index}`}>{item.label}</a>
       ))}
       <a href={auditHref} style="--menu-index:3">{copy.cta.audit}</a>
     </nav>

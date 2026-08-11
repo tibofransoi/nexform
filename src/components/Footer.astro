@@ -16,7 +16,6 @@ const year = new Date().getFullYear();
       </a>
       <p class="footer-claim">{copy.footer.claim}</p>
     </div>
-    <p class="footer-location">{copy.footer.location}</p>
     <nav aria-label="Legal">
       <a href={routeFor(locale, 'privacy')}>{copy.footer.privacy}</a>
       <a href={routeFor(locale, 'legal')}>{copy.footer.legal}</a>
@@ -24,6 +23,5 @@ const year = new Date().getFullYear();
   </div>
   <div class="footer-bottom shell">
     <span>© {year} Nexform</span>
-    <span class="todo-note">{copy.footer.todo}</span>
   </div>
 </footer>

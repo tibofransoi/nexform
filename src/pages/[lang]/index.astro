@@ -1,10 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import RevealHeading from '../../components/RevealHeading.astro';
 import WebsiteCheck from '../../components/WebsiteCheck.astro';
-import ContactActions from '../../components/ContactActions.astro';
 import { getContent } from '../../content/site';
-import { publishedLocales, routeFor, type PublishedLocale } from '../../i18n/config';
+import { landingCopy } from '../../content/landing';
+import { publishedLocales, type PublishedLocale } from '../../i18n/config';
 
 export function getStaticPaths() {
   return publishedLocales.map((lang) => ({ params: { lang }, props: { locale: lang } }));
@@ -12,191 +11,86 @@ export function getStaticPaths() {
 
 interface Props { locale: PublishedLocale }
 const { locale } = Astro.props;
-const copy = getContent(locale);
+const siteCopy = getContent(locale);
+const copy = landingCopy[locale];
 ---
 
-<BaseLayout locale={locale} page="home" title={copy.seo.home.title} description={copy.seo.home.description}>
-  <span slot="skip">{copy.skip}</span>
+<BaseLayout locale={locale} page="home" title={siteCopy.seo.home.title} description={siteCopy.seo.home.description}>
+  <span slot="skip">{siteCopy.skip}</span>
 
-  <section class="hero" aria-labelledby="hero-title">
-    <div class="ambient-field" aria-hidden="true" data-ambient>
-      <span>NEX</span><span>FORM</span>
-    </div>
-    <div class="hero-grid shell">
-      <aside class="hero-meta" aria-label="Nexform services and languages">
-        <span>Websites</span>
-        <span>Meta Ads</span>
-        <span>EN · DE · NL</span>
-      </aside>
-      <div class="hero-copy">
-        <p class="eyebrow hero-eyebrow">{copy.hero.eyebrow}</p>
-        <RevealHeading lines={copy.hero.lines} level={1} hero class="hero-heading" />
-        <p class="hero-lead">{copy.hero.lead}</p>
+  <div class="one-page">
+    <section class="one-hero shell" aria-labelledby="hero-title">
+      <h1 id="hero-title">{copy.hero.title}</h1>
+      <p>{copy.hero.lead}</p>
+      <div class="one-actions">
+        <a class="button button-primary" href="#work">{copy.hero.primary}<span aria-hidden="true">→</span></a>
+        <a class="button button-secondary" href="#website-check">{copy.hero.secondary}</a>
       </div>
-      <aside class="hero-checks">
-        <p>{copy.hero.coverage}</p>
-        <ol>
-          {copy.hero.checks.map((check, index) => <li><span>0{index + 1}</span>{check}</li>)}
-        </ol>
-      </aside>
-      <div class="hero-form" id="website-check">
-        <WebsiteCheck locale={locale} id={`hero-check-${locale}`} />
-        <p class="form-promise">{copy.hero.promise}</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="section proof-section shell" aria-labelledby="proof-heading">
-    <div class="section-intro">
-      <p class="eyebrow">{copy.proof.eyebrow}</p>
-      <RevealHeading lines={[copy.proof.title]} class="section-heading" />
-    </div>
-    <div class="proof-ledger" data-reveal-group>
-      {copy.proof.items.map((item) => (
-        <article class:list={['proof-item', !item.verified && 'is-pending']} data-stagger-item>
-          <p class="proof-value" aria-label={`${item.value}${item.suffix || ''}`}>
-            <span data-counter={item.verified ? item.value : undefined}>{item.verified ? '00' : '—'}</span>{item.verified && item.suffix}
-          </p>
-          <p>{item.label}</p>
-        </article>
-      ))}
-    </div>
-    <p class="proof-note" data-reveal>{copy.proof.note}</p>
-  </section>
-
-  <section class="section tension-section" aria-labelledby="tension-heading">
-    <div class="shell">
-      <div class="section-intro section-intro-wide">
-        <p class="eyebrow">{copy.tension.eyebrow}</p>
-        <RevealHeading lines={[copy.tension.title]} class="section-heading" />
+    <section class="one-audit shell" id="website-check" aria-labelledby="audit-title">
+      <div class="one-section-heading">
+        <h2 id="audit-title">{copy.audit.title}</h2>
+        <p>{copy.audit.copy}</p>
       </div>
-      <div class="tension-grid" data-reveal-group>
-        <article class="tension-option" data-stagger-item>
-          <span class="utility-label">A</span>
-          <h3>{copy.tension.cheapTitle}</h3>
-          <p>{copy.tension.cheapCopy}</p>
-        </article>
-        <article class="tension-option" data-stagger-item>
-          <span class="utility-label">B</span>
-          <h3>{copy.tension.slowTitle}</h3>
-          <p>{copy.tension.slowCopy}</p>
-        </article>
-        <article class="tension-route" data-stagger-item>
-          <span class="utility-label">NEX / FORM</span>
-          <h3>{copy.tension.routeTitle}</h3>
-          <p>{copy.tension.routeCopy}</p>
-        </article>
-      </div>
-    </div>
-  </section>
+      <WebsiteCheck locale={locale} id={`hero-check-${locale}`} compact />
+    </section>
 
-  <section class="section services-section shell" id="services" aria-labelledby="services-heading">
-    <div class="section-intro section-intro-wide">
-      <p class="eyebrow">{copy.servicesIntro.eyebrow}</p>
-      <RevealHeading lines={[copy.servicesIntro.title]} class="section-heading" />
-      <p class="section-lead" data-reveal>{copy.servicesIntro.copy}</p>
-    </div>
-    <div class="offer-ladder" data-reveal-group>
-      {copy.services.map((service) => (
-        <article class={`offer offer-${service.number}`} data-stagger-item>
-          <span class="offer-number">{service.number}</span>
-          <div>
-            <h3>{service.title}</h3>
-            <p class="offer-summary">{service.summary}</p>
-          </div>
-          <div class="offer-detail">
-            <p>{service.detail}</p>
-            <p class="offer-outcome">{service.outcome}</p>
-          </div>
-        </article>
-      ))}
-    </div>
-    <a class="inline-link" href={routeFor(locale, 'services')}>{copy.nav.services}<span aria-hidden="true">→</span></a>
-  </section>
-
-  <section class="section work-section" id="work" aria-labelledby="work-heading">
-    <div class="shell">
-      <div class="section-intro section-intro-wide">
-        <p class="eyebrow">{copy.work.eyebrow}</p>
-        <RevealHeading lines={[copy.work.title]} class="section-heading" />
-        <p class="section-lead" data-reveal>{copy.work.intro}</p>
-      </div>
-      <div class="evidence-wall" data-reveal-group>
-        <a class="case-study case-studio" href={routeFor(locale, 'work')} data-stagger-item>
-          <div class="case-visual case-visual-system" aria-hidden="true">
-            <div class="mini-nav"><span>N/F</span><span></span><span></span></div>
-            <div class="mini-copy"><span></span><span></span><span></span></div>
-            <div class="mini-check"><span>yourwebsite.com</span><span>→</span></div>
-          </div>
-          <div class="case-copy">
-            <p>{copy.work.studioTag}</p>
-            <h3>{copy.work.studioTitle}</h3>
-            <span aria-hidden="true">↗</span>
-          </div>
-        </a>
-        <article class="case-study case-confidential" data-stagger-item>
-          <div class="case-visual case-visual-confidential" aria-hidden="true">
-            <span>META</span><span>DE</span><span>PRIVATE</span>
-          </div>
-          <div class="case-copy">
-            <p>{copy.work.childcareTag}</p>
-            <h3>{copy.work.childcareTitle}</h3>
-            <span class="confidential-label">{copy.work.confidential}</span>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section loop-section shell" id="method" aria-labelledby="loop-heading">
-    <div class="loop-intro">
-      <p class="eyebrow">{copy.loop.eyebrow}</p>
-      <RevealHeading lines={[copy.loop.title]} class="section-heading" />
-      <p class="section-lead" data-reveal>{copy.loop.copy}</p>
-    </div>
-    <ol class="loop-steps" data-reveal-group>
-      {copy.loop.steps.map((step, index) => (
-        <li data-stagger-item>
-          <span>0{index + 1}</span>
-          <h3>{step.title}</h3>
-          <p>{step.copy}</p>
-        </li>
-      ))}
-    </ol>
-    <a class="inline-link" href={routeFor(locale, 'method')}>{copy.nav.method}<span aria-hidden="true">→</span></a>
-  </section>
-
-  <section class="section markets-section" aria-labelledby="markets-heading">
-    <div class="shell markets-grid">
-      <div class="markets-intro">
-        <p class="eyebrow">{copy.markets.eyebrow}</p>
-        <RevealHeading lines={[copy.markets.title]} class="section-heading" />
-        <p class="section-lead" data-reveal>{copy.markets.copy}</p>
-      </div>
-      <div class="market-list" data-reveal-group>
-        {copy.markets.items.map((market) => (
-          <article data-stagger-item>
-            <span>{market.code}</span>
-            <div><h3>{market.title}</h3><p>{market.copy}</p></div>
+    <section class="one-section shell" id="services" aria-labelledby="services-title">
+      <h2 id="services-title">{copy.services.title}</h2>
+      <div class="one-service-grid">
+        {copy.services.items.map((item, index) => (
+          <article>
+            <span>0{index + 1}</span>
+            <h3>{item.title}</h3>
+            <p>{item.copy}</p>
           </article>
         ))}
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="section final-section" aria-labelledby="final-heading">
-    <div class="shell final-grid">
-      <div>
-        <p class="eyebrow">{copy.final.eyebrow}</p>
-        <RevealHeading lines={[copy.final.title]} class="section-heading" />
-        <p class="section-lead" data-reveal>{copy.final.copy}</p>
+    <section class="one-section one-work" id="work" aria-labelledby="work-title">
+      <div class="shell">
+        <h2 id="work-title">{copy.work.title}</h2>
+        <div class="one-work-grid">
+          {copy.work.items.map((item) => (
+            <article class:list={['one-case', `one-case-${item.type}`]}>
+              <div class="one-case-visual" aria-hidden="true">
+                {item.type === 'site' ? (
+                  <div class="demo-browser"><span></span><strong>NEX/FORM</strong><i></i><i></i></div>
+                ) : (
+                  <div class="demo-campaign"><strong>META</strong><span>01</span><span>02</span><span>03</span></div>
+                )}
+              </div>
+              <div class="one-case-copy">
+                <span>{item.label}</span>
+                <h3>{item.title}</h3>
+                <p>{item.copy}</p>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
-      <div class="final-form" data-reveal>
-        <WebsiteCheck locale={locale} id={`final-check-${locale}`} compact />
-        <ContactActions locale={locale} />
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <a class="mobile-sticky-cta" href="#website-check">{copy.cta.audit}<span aria-hidden="true">→</span></a>
+    <section class="one-section shell" id="method" aria-labelledby="process-title">
+      <h2 id="process-title">{copy.process.title}</h2>
+      <ol class="one-process">
+        {copy.process.items.map((item, index) => (
+          <li><span>0{index + 1}</span><div><h3>{item.title}</h3><p>{item.copy}</p></div></li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="one-final" aria-labelledby="final-title">
+      <div class="shell">
+        <h2 id="final-title">{copy.final.title}</h2>
+        <p>{copy.final.copy}</p>
+        <div class="one-actions">
+          <a class="button button-light" href="#website-check">{copy.final.primary}<span aria-hidden="true">→</span></a>
+          <a class="one-text-link" href="#work">{copy.final.secondary}</a>
+        </div>
+      </div>
+    </section>
+  </div>
 </BaseLayout>

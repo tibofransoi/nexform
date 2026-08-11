@@ -1,0 +1,71 @@
+---
+import { localeLabels, publishedLocales, routeFor, type PageKey, type PublishedLocale } from '../i18n/config';
+import { getContent } from '../content/site';
+
+interface Props {
+  locale: PublishedLocale;
+  page: PageKey;
+}
+
+const { locale, page } = Astro.props;
+const copy = getContent(locale);
+const auditHref = `${routeFor(locale, 'home')}#website-check`;
+const navItems = [
+  { key: 'work' as const, label: copy.nav.work },
+  { key: 'services' as const, label: copy.nav.services },
+  { key: 'method' as const, label: copy.nav.method },
+];
+---
+
+<header class="site-header" data-site-header transition:name="nexform-header" transition:animate="none">
+  <div class="nav-shell">
+    <a class="wordmark" href={routeFor(locale, 'home')} aria-label="Nexform home">
+      <span>NEX</span><span aria-hidden="true">/</span><span>FORM</span>
+    </a>
+
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      {navItems.map((item) => (
+        <a class:list={['nav-link', page === item.key && 'is-active']} href={routeFor(locale, item.key)} aria-current={page === item.key ? 'page' : undefined}>
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <div class="nav-actions">
+      <div class="language-picker" data-language-picker>
+        <button class="language-button" type="button" aria-haspopup="listbox" aria-expanded="false" data-language-button>
+          <span>{locale.toUpperCase()}</span>
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" /></svg>
+        </button>
+        <div class="language-menu" role="listbox" aria-label="Language" aria-hidden="true" inert data-language-menu>
+          {publishedLocales.map((code) => (
+            <a href={routeFor(code, page)} role="option" aria-selected={code === locale} lang={code}>
+              <span>{localeLabels[code]}</span><span>{code.toUpperCase()}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+      <a class="button button-small button-primary nav-cta" href={auditHref}>
+        <span>{copy.cta.audit}</span><span class="button-arrow" aria-hidden="true">→</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path class="menu-line menu-line-top" d="M4 8h16" />
+          <path class="menu-line menu-line-bottom" d="M4 16h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true" inert data-mobile-menu>
+    <nav aria-label="Mobile navigation">
+      {navItems.map((item, index) => (
+        <a href={routeFor(locale, item.key)} style={`--menu-index:${index}`}>{item.label}</a>
+      ))}
+      <a href={auditHref} style="--menu-index:3">{copy.cta.audit}</a>
+    </nav>
+    <div class="mobile-languages">
+      {publishedLocales.map((code) => <a href={routeFor(code, page)} lang={code}>{code.toUpperCase()}</a>)}
+    </div>
+  </div>
+</header>

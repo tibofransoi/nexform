@@ -1,0 +1,19 @@
+---
+interface Props {
+  lines: string[];
+  level?: 1 | 2;
+  class?: string;
+  hero?: boolean;
+}
+
+const { lines, level = 2, class: className = '', hero = false } = Astro.props;
+const Tag = `h${level}` as 'h1' | 'h2';
+---
+
+<Tag class:list={['masked-heading', hero && 'hero-title', className]} data-heading-reveal={!hero || undefined}>
+  {lines.map((line, index) => (
+    <span class="line-mask">
+      <span class="line-inner" style={`--line-index:${index}`}>{line}</span>
+    </span>
+  ))}
+</Tag>

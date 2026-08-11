@@ -1,0 +1,41 @@
+---
+import type { PublishedLocale } from '../i18n/config';
+import { getContent } from '../content/site';
+
+interface Props { locale: PublishedLocale }
+const { locale } = Astro.props;
+const copy = getContent(locale);
+const bookingUrl = import.meta.env.PUBLIC_BOOKING_URL || '';
+const whatsappNumber = (import.meta.env.PUBLIC_WHATSAPP_NUMBER || '').replace(/\D/g, '');
+const whatsappText = locale === 'de'
+  ? 'Hallo Nexform, ich möchte kurz über meine Website sprechen.'
+  : locale === 'nl'
+    ? 'Hoi Nexform, ik wil graag kort over mijn website praten.'
+    : 'Hi Nexform, I would like to talk briefly about my website.';
+const whatsappUrl = whatsappNumber ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappText)}` : '';
+---
+
+<div class="contact-actions">
+  {bookingUrl ? (
+    <a class="text-action" href={bookingUrl} target="_blank" rel="noreferrer" data-conversion="booking">
+      {copy.cta.booking}<span aria-hidden="true">↗</span>
+    </a>
+  ) : (
+    <span class="text-action is-disabled" aria-disabled="true" title={copy.cta.unavailable}>{copy.cta.booking}<span aria-hidden="true">—</span></span>
+  )}
+  {whatsappUrl ? (
+    <a class="text-action" href={whatsappUrl} target="_blank" rel="noreferrer" data-conversion="whatsapp">
+      {copy.cta.whatsapp}<span aria-hidden="true">↗</span>
+    </a>
+  ) : (
+    <span class="text-action is-disabled" aria-disabled="true" title={copy.cta.unavailable}>{copy.cta.whatsapp}<span aria-hidden="true">—</span></span>
+  )}
+</div>
+
+<script>
+  document.querySelectorAll('[data-conversion]').forEach((link) => {
+    if (!(link instanceof HTMLAnchorElement) || link.dataset.ready === 'true') return;
+    link.dataset.ready = 'true';
+    link.addEventListener('click', () => window.dispatchEvent(new CustomEvent('nexform:conversion', { detail: { name: link.dataset.conversion } })));
+  });
+</script>

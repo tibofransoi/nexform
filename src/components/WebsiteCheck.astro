@@ -1,0 +1,242 @@
+---
+import type { PublishedLocale } from '../i18n/config';
+import { getContent } from '../content/site';
+
+interface Props {
+  locale: PublishedLocale;
+  id: string;
+  compact?: boolean;
+}
+
+const { locale, id, compact = false } = Astro.props;
+const copy = getContent(locale);
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
+const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY || '';
+const placeholders = ['yourwebsite.com', 'bakkerij-jansen.nl', 'physio-mueller.de'];
+---
+
+<form
+  class:list={['website-check', compact && 'website-check-compact']}
+  id={id}
+  data-website-check
+  data-endpoint={endpoint}
+  data-access-key={accessKey}
+  data-statuses={JSON.stringify(copy.form.statuses)}
+  data-errors={JSON.stringify({
+    url: copy.form.invalidUrl,
+    name: copy.form.invalidName,
+    email: copy.form.invalidEmail,
+    endpoint: copy.form.missingEndpoint,
+    network: copy.form.networkError,
+  })}
+  novalidate
+>
+  <div class="check-glow" aria-hidden="true"></div>
+  <div class="check-form-content" data-form-content>
+    <div class="check-url-stage" data-url-stage>
+      <label class="sr-only" for={`${id}-url`}>{copy.form.urlLabel}</label>
+      <div class="url-field-wrap">
+        <span class="placeholder-cycle" aria-hidden="true" data-placeholder-cycle>
+          {placeholders.map((placeholder, index) => <span class:list={[index === 0 && 'is-current']} data-placeholder>{placeholder}</span>)}
+        </span>
+        <input
+          id={`${id}-url`}
+          name="website"
+          type="text"
+          inputmode="url"
+          autocomplete="url"
+          spellcheck="false"
+          aria-describedby={`${id}-error`}
+          data-url-input
+        />
+      </div>
+      <button class="button check-next" type="button" data-check-next data-magnetic>
+        <span>{copy.form.continue}</span><span class="button-arrow" aria-hidden="true">→</span>
+      </button>
+    </div>
+
+    <div class="check-details-stage" aria-hidden="true" inert data-details-stage>
+      <div class="locked-url">
+        <span data-locked-url></span>
+        <button type="button" data-edit-url>{copy.form.edit}</button>
+      </div>
+      <div class="detail-fields">
+        <label>
+          <span>{copy.form.nameLabel}</span>
+          <input name="name" type="text" autocomplete="name" data-name-input />
+        </label>
+        <label>
+          <span>{copy.form.emailLabel}</span>
+          <input name="email" type="email" autocomplete="email" inputmode="email" data-email-input />
+        </label>
+        <input class="honeypot" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <button class="button check-submit" type="submit" data-check-submit data-default-label={copy.form.submit}>
+          <span data-submit-label>{copy.form.submit}</span><span class="button-arrow" aria-hidden="true">→</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="check-progress" aria-hidden="true"><span data-progress></span></div>
+  </div>
+
+  <p class="check-error" id={`${id}-error`} role="alert" data-form-error></p>
+
+  <div class="check-success" aria-live="polite" aria-hidden="true" inert data-form-success>
+    <svg class="success-check" viewBox="0 0 52 52" aria-hidden="true">
+      <circle cx="26" cy="26" r="23" />
+      <path d="m15 27 7 7 15-17" />
+    </svg>
+    <div>
+      <strong>{copy.form.successTitle}</strong>
+      <span>{copy.form.successCopy}</span>
+    </div>
+  </div>
+</form>
+
+<script>
+  const sleep = (ms: number) => new Promise((resolve) => window.setTimeout(resolve, ms));
+
+  const normaliseUrl = (value: string) => {
+    const raw = value.trim();
+    if (!raw) return null;
+    try {
+      const parsed = new URL(/^https?:\/\//i.test(raw) ? raw : `https://${raw}`);
+      return parsed.hostname.includes('.') ? parsed.href : null;
+    } catch {
+      return null;
+    }
+  };
+
+  const initialiseChecks = () => {
+    document.querySelectorAll('[data-website-check]').forEach((form) => {
+      if (!(form instanceof HTMLFormElement) || form.dataset.initialised === 'true') return;
+      form.dataset.initialised = 'true';
+
+      const urlInput = form.querySelector('[data-url-input]');
+      const nameInput = form.querySelector('[data-name-input]');
+      const emailInput = form.querySelector('[data-email-input]');
+      const nextButton = form.querySelector('[data-check-next]');
+      const editButton = form.querySelector('[data-edit-url]');
+      const details = form.querySelector('[data-details-stage]');
+      const urlStage = form.querySelector('[data-url-stage]');
+      const lockedUrl = form.querySelector('[data-locked-url]');
+      const error = form.querySelector('[data-form-error]');
+      const success = form.querySelector('[data-form-success]');
+      const content = form.querySelector('[data-form-content]');
+      const submitLabel = form.querySelector('[data-submit-label]');
+      const progress = form.querySelector('[data-progress]');
+      const placeholders = [...form.querySelectorAll('[data-placeholder]')];
+      const statuses = JSON.parse(form.dataset.statuses || '[]') as string[];
+      const errors = JSON.parse(form.dataset.errors || '{}') as Record<string, string>;
+      let placeholderIndex = 0;
+
+      if (!(urlInput instanceof HTMLInputElement) || !(nameInput instanceof HTMLInputElement) || !(emailInput instanceof HTMLInputElement)) return;
+
+      const showError = (message: string, field?: HTMLInputElement) => {
+        if (error) error.textContent = message;
+        form.classList.remove('is-shaking');
+        void form.offsetWidth;
+        form.classList.add('is-shaking');
+        window.setTimeout(() => form.classList.remove('is-shaking'), 320);
+        field?.focus();
+      };
+
+      const clearError = () => { if (error) error.textContent = ''; };
+
+      const openDetails = () => {
+        const url = normaliseUrl(urlInput.value);
+        if (!url) return showError(errors.url, urlInput);
+        clearError();
+        urlInput.value = url;
+        if (lockedUrl) lockedUrl.textContent = new URL(url).hostname;
+        urlStage?.setAttribute('aria-hidden', 'true');
+        urlStage?.setAttribute('inert', '');
+        details?.setAttribute('aria-hidden', 'false');
+        details?.removeAttribute('inert');
+        form.classList.add('has-details');
+        window.setTimeout(() => nameInput.focus(), 220);
+      };
+
+      nextButton?.addEventListener('click', openDetails);
+      urlInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          openDetails();
+        }
+      });
+      urlInput.addEventListener('input', () => form.classList.toggle('has-url-value', Boolean(urlInput.value)));
+      editButton?.addEventListener('click', () => {
+        form.classList.remove('has-details');
+        details?.setAttribute('aria-hidden', 'true');
+        details?.setAttribute('inert', '');
+        urlStage?.setAttribute('aria-hidden', 'false');
+        urlStage?.removeAttribute('inert');
+        window.setTimeout(() => urlInput.focus(), 220);
+      });
+
+      const cycle = window.setInterval(() => {
+        if (document.activeElement === urlInput || urlInput.value || placeholders.length < 2) return;
+        const current = placeholders[placeholderIndex];
+        placeholderIndex = (placeholderIndex + 1) % placeholders.length;
+        const next = placeholders[placeholderIndex];
+        current?.classList.add('is-leaving');
+        next?.classList.add('is-entering');
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          next?.classList.add('is-current');
+          next?.classList.remove('is-entering');
+        }));
+        window.setTimeout(() => {
+          current?.classList.remove('is-current', 'is-leaving');
+        }, 420);
+      }, 3500);
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        clearError();
+        const url = normaliseUrl(urlInput.value);
+        if (!url) return showError(errors.url, urlInput);
+        if (!nameInput.value.trim()) return showError(errors.name, nameInput);
+        if (!emailInput.validity.valid || !emailInput.value.trim()) return showError(errors.email, emailInput);
+
+        const endpoint = form.dataset.endpoint;
+        const accessKey = form.dataset.accessKey;
+        if (!endpoint || !accessKey) return showError(errors.endpoint);
+
+        form.classList.add('is-submitting');
+        const body = new FormData(form);
+        body.set('website', url);
+        body.set('access_key', accessKey);
+        body.set('subject', `Nexform Website Check — ${new URL(url).hostname}`);
+        body.set('from_name', 'Nexform Website Check');
+
+        const request = fetch(endpoint, { method: 'POST', body, headers: { Accept: 'application/json' } })
+          .then(async (response) => ({ response, payload: await response.json().catch(() => ({})) as { success?: boolean } }))
+          .catch(() => null);
+
+        for (const status of statuses) {
+          if (submitLabel) submitLabel.textContent = status;
+          await sleep(900);
+        }
+
+        const result = await request;
+        if (!result || !result.response.ok || result.payload?.success === false) {
+          form.classList.remove('is-submitting');
+          if (submitLabel) submitLabel.textContent = form.querySelector('[data-check-submit]')?.getAttribute('data-default-label') || '';
+          if (progress instanceof HTMLElement) progress.style.removeProperty('--progress-state');
+          return showError(errors.network);
+        }
+
+        content?.setAttribute('aria-hidden', 'true');
+        content?.setAttribute('inert', '');
+        success?.setAttribute('aria-hidden', 'false');
+        success?.removeAttribute('inert');
+        form.classList.add('is-success');
+        window.clearInterval(cycle);
+        window.dispatchEvent(new CustomEvent('nexform:conversion', { detail: { name: 'audit_submit' } }));
+      });
+    });
+  };
+
+  document.addEventListener('astro:page-load', initialiseChecks);
+  initialiseChecks();
+</script>

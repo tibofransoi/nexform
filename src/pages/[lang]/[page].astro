@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RevealHeading from '../../components/RevealHeading.astro';
+import WebsiteCheck from '../../components/WebsiteCheck.astro';
+import ContactActions from '../../components/ContactActions.astro';
+import { getContent } from '../../content/site';
+import { publishedLocales, routes, type PageKey, type PublishedLocale } from '../../i18n/config';
+
+export function getStaticPaths() {
+  const pageKeys = ['services', 'work', 'method', 'privacy', 'legal'] as const;
+  return publishedLocales.flatMap((lang) => pageKeys.map((pageKey) => ({
+    params: { lang, page: routes[lang][pageKey].split('/').filter(Boolean)[1] },
+    props: { locale: lang, pageKey },
+  })));
+}
+
+interface Props { locale: PublishedLocale; pageKey: Exclude<PageKey, 'home'> }
+const { locale, pageKey } = Astro.props;
+const copy = getContent(locale);
+const seo = copy.seo[pageKey];
+---
+
+<BaseLayout locale={locale} page={pageKey} title={seo.title} description={seo.description}>
+  <span slot="skip">{copy.skip}</span>
+
+  {pageKey === 'services' && (
+    <>
+      <section class="inner-hero shell">
+        <p class="eyebrow">{copy.servicesPage.eyebrow}</p>
+        <RevealHeading lines={[copy.servicesPage.title]} level={1} hero class="inner-title" />
+        <p class="inner-lead">{copy.servicesPage.intro}</p>
+      </section>
+      <section class="inner-section shell">
+        <div class="offer-ladder" data-reveal-group>
+          {copy.services.map((service) => (
+            <article class={`offer offer-${service.number}`} data-stagger-item>
+              <span class="offer-number">{service.number}</span>
+              <div><h2>{service.title}</h2><p class="offer-summary">{service.summary}</p></div>
+              <div class="offer-detail"><p>{service.detail}</p><p class="offer-outcome">{service.outcome}</p></div>
+            </article>
+          ))}
+        </div>
+      </section>
+      <section class="inner-section mist-section">
+        <div class="shell split-copy">
+          <div><RevealHeading lines={[copy.servicesPage.includedTitle]} class="compact-heading" /></div>
+          <ul data-reveal-group>{copy.servicesPage.included.map((item) => <li data-stagger-item>{item}</li>)}</ul>
+        </div>
+      </section>
+      <section class="inner-section shell pricing-note" data-reveal>
+        <p class="eyebrow">{copy.servicesPage.pricingTitle}</p>
+        <p>{copy.servicesPage.pricingCopy}</p>
+      </section>
+    </>
+  )}
+
+  {pageKey === 'work' && (
+    <>
+      <section class="inner-hero shell">
+        <p class="eyebrow">{copy.workPage.eyebrow}</p>
+        <RevealHeading lines={[copy.workPage.title]} level={1} hero class="inner-title" />
+        <p class="inner-lead">{copy.workPage.intro}</p>
+      </section>
+      <section class="inner-section shell work-detail-grid">
+        <article class="work-detail work-detail-feature" data-reveal>
+          <p class="eyebrow">{copy.work.studioTag}</p><h2>{copy.work.studioTitle}</h2><p>{copy.work.studioCopy}</p>
+          <ul>{copy.work.studioPoints.map((point) => <li>{point}</li>)}</ul>
+        </article>
+        <article class="work-detail work-detail-private" data-reveal>
+          <p class="eyebrow">{copy.work.childcareTag}</p><h2>{copy.work.childcareTitle}</h2><p>{copy.work.childcareCopy}</p><strong>{copy.work.confidential}</strong>
+        </article>
+      </section>
+      <section class="inner-section mist-section"><div class="shell split-copy">
+        <div><RevealHeading lines={[copy.workPage.proofTitle]} class="compact-heading" /></div><p data-reveal>{copy.workPage.proofCopy}</p>
+        <div><RevealHeading lines={[copy.workPage.permissionTitle]} class="compact-heading" /></div><p data-reveal>{copy.workPage.permissionCopy}</p>
+      </div></section>
+    </>
+  )}
+
+  {pageKey === 'method' && (
+    <>
+      <section class="inner-hero shell">
+        <p class="eyebrow">{copy.methodPage.eyebrow}</p>
+        <RevealHeading lines={[copy.methodPage.title]} level={1} hero class="inner-title" />
+        <p class="inner-lead">{copy.methodPage.intro}</p>
+      </section>
+      <section class="inner-section shell">
+        <ol class="method-phases" data-reveal-group>
+          {copy.methodPage.phases.map((phase) => <li data-stagger-item><span>{phase.number}</span><h2>{phase.title}</h2><p>{phase.copy}</p></li>)}
+        </ol>
+      </section>
+      <section class="inner-section action-section"><div class="shell split-copy">
+        <div><RevealHeading lines={[copy.methodPage.aiTitle]} class="compact-heading" /></div><p data-reveal>{copy.methodPage.aiCopy}</p>
+      </div></section>
+    </>
+  )}
+
+  {(pageKey === 'privacy' || pageKey === 'legal') && (
+    <section class="legal-page shell">
+      <RevealHeading lines={[pageKey === 'privacy' ? copy.privacy.title : copy.legal.title]} level={1} hero class="inner-title" />
+      <p class="inner-lead">{pageKey === 'privacy' ? copy.privacy.intro : copy.legal.intro}</p>
+      {pageKey === 'privacy' ? (
+        <div class="legal-sections" data-reveal-group>
+          {copy.privacy.sections.map((section) => <section data-stagger-item><h2>{section.title}</h2><p>{section.copy}</p></section>)}
+        </div>
+      ) : (
+        <dl class="legal-rows" data-reveal-group>
+          {copy.legal.rows.map((row) => <div data-stagger-item><dt>{row.label}</dt><dd>{row.value}</dd></div>)}
+        </dl>
+      )}
+    </section>
+  )}
+
+  {pageKey !== 'privacy' && pageKey !== 'legal' && (
+    <section class="section final-section inner-final">
+      <div class="shell final-grid">
+        <div><p class="eyebrow">{copy.final.eyebrow}</p><RevealHeading lines={[copy.final.title]} class="section-heading" /><p class="section-lead" data-reveal>{copy.final.copy}</p></div>
+        <div class="final-form" data-reveal><WebsiteCheck locale={locale} id={`${pageKey}-check-${locale}`} compact /><ContactActions locale={locale} /></div>
+      </div>
+    </section>
+  )}
+</BaseLayout>

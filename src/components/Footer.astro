@@ -1,0 +1,29 @@
+---
+import { getContent } from '../content/site';
+import { routeFor, type PublishedLocale } from '../i18n/config';
+
+interface Props { locale: PublishedLocale }
+const { locale } = Astro.props;
+const copy = getContent(locale);
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="footer-main shell">
+    <div>
+      <a class="wordmark footer-wordmark" href={routeFor(locale, 'home')} aria-label="Nexform home">
+        <span>NEX</span><span aria-hidden="true">/</span><span>FORM</span>
+      </a>
+      <p class="footer-claim">{copy.footer.claim}</p>
+    </div>
+    <p class="footer-location">{copy.footer.location}</p>
+    <nav aria-label="Legal">
+      <a href={routeFor(locale, 'privacy')}>{copy.footer.privacy}</a>
+      <a href={routeFor(locale, 'legal')}>{copy.footer.legal}</a>
+    </nav>
+  </div>
+  <div class="footer-bottom shell">
+    <span>© {year} Nexform</span>
+    <span class="todo-note">{copy.footer.todo}</span>
+  </div>
+</footer>

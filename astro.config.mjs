@@ -15,7 +15,7 @@ export default defineConfig({
   integrations: [
     tailwind({ applyBaseStyles: false }),
     sitemap({
-      filter: (page) => !page.includes('/fr/') && !page.includes('/es/'),
+      filter: (page) => !page.includes('/es/'),
     }),
   ],
 });

@@ -236,7 +236,7 @@ const en: Content = {
       { code: 'DE', title: 'Deutsch', copy: 'Clear scope, dependable process and evidence before adjectives.' },
       { code: 'NL', title: 'Nederlands', copy: 'Direct language, short lines and no inflated agency promises.' },
       { code: 'EN', title: 'English', copy: 'Plain English without imported agency jargon.' },
-      { code: 'FR', title: 'Français', copy: 'Architecture ready; publication waits for native verification.' },
+      { code: 'FR', title: 'Français', copy: 'Clear French copy written for a direct, professional presentation.' },
     ],
   },
   final: {
@@ -379,7 +379,7 @@ const de: Content = {
       { code: 'DE', title: 'Deutsch', copy: 'Klarer Umfang, verlässlicher Ablauf und Belege vor Adjektiven.' },
       { code: 'NL', title: 'Nederlands', copy: 'Direkte Sprache, kurze Wege und keine aufgeblähten Versprechen.' },
       { code: 'EN', title: 'English', copy: 'Klares Englisch ohne importierte Agenturfloskeln.' },
-      { code: 'FR', title: 'Français', copy: 'Technisch vorbereitet; Veröffentlichung erst nach muttersprachlicher Prüfung.' },
+      { code: 'FR', title: 'Français', copy: 'Klare französische Texte für einen professionellen, direkten Auftritt.' },
     ],
   },
   final: { eyebrow: 'Beginnen Sie mit den Fakten', title: 'Schicken Sie uns die URL. Wir zeigen, was sie Sie kostet.', copy: 'Unverbindlich und ohne automatische Punktzahl im Beratungslook. Ein Mensch prüft die Website und liefert zuerst den nützlichen Teil.' },
@@ -476,7 +476,7 @@ const nl: Content = {
   },
   markets: {
     eyebrow: 'Geen vertaallaag', title: 'Geschreven in de taal van je klant.', copy: 'Het verhaal verandert per taal. De Duitse versie legt de nadruk op proceszekerheid; de Nederlandse zegt direct waar het op staat.',
-    items: [{ code: 'NL', title: 'Nederlands', copy: 'Directe taal, korte lijnen en geen opgeblazen bureauclaims.' }, { code: 'DE', title: 'Deutsch', copy: 'Heldere scope, betrouwbaar proces en bewijs vóór bijvoeglijke naamwoorden.' }, { code: 'EN', title: 'English', copy: 'Helder Engels zonder geïmporteerde bureautaal.' }, { code: 'FR', title: 'Français', copy: 'Techniek staat klaar; publicatie volgt pas na native controle.' }],
+    items: [{ code: 'NL', title: 'Nederlands', copy: 'Directe taal, korte lijnen en geen opgeblazen bureauclaims.' }, { code: 'DE', title: 'Deutsch', copy: 'Heldere scope, betrouwbaar proces en bewijs vóór bijvoeglijke naamwoorden.' }, { code: 'EN', title: 'English', copy: 'Helder Engels zonder geïmporteerde bureautaal.' }, { code: 'FR', title: 'Français', copy: 'Heldere Franse tekst voor een professionele en directe presentatie.' }],
   },
   final: { eyebrow: 'Begin met het bewijs', title: 'Geef ons de URL. Wij laten zien wat hij je kost.', copy: 'Vrijblijvend en zonder automatische score vermomd als advies. Een mens bekijkt je site en stuurt het nuttige deel eerst.' },
   servicesPage: {
@@ -505,6 +505,71 @@ const nl: Content = {
   footer: { claim: 'Websites die hun werk doen.', location: 'Websites · Beheer · Meta Ads', privacy: 'Privacy', legal: 'Bedrijfsgegevens', todo: 'Contact- en registratiegegevens volgen' },
 };
 
-export const content: Record<PublishedLocale, Content> = { en, de, nl };
+const fr: Content = {
+  ...en,
+  langName: 'Français',
+  skip: 'Aller au contenu',
+  nav: { work: 'Réalisations', services: 'Services', method: 'Méthode' },
+  cta: {
+    audit: 'Analyser mon site',
+    booking: 'Planifier un échange',
+    whatsapp: 'Nous écrire sur WhatsApp',
+    unavailable: 'Disponible dès que les coordonnées sont confirmées',
+  },
+  seo: {
+    home: { title: 'Création de sites web pour PME | Nexform', description: 'Des sites clairs, rapides et conçus pour générer des demandes. Création, suivi et campagnes Meta Ads.' },
+    services: { title: 'Sites web, suivi et Meta Ads | Nexform', description: 'Conception de sites, maintenance et campagnes Meta Ads pour les petites entreprises.' },
+    work: { title: 'Exemples de sites web | Nexform', description: 'Découvrez plusieurs directions de sites web conçues pour différents secteurs.' },
+    method: { title: 'Notre méthode de travail | Nexform', description: 'Un processus simple et visible, du cadrage à la mise en ligne.' },
+    privacy: { title: 'Confidentialité | Nexform', description: 'Informations sur le traitement des demandes et des données personnelles par Nexform.' },
+    legal: { title: 'Mentions légales | Nexform', description: 'Informations légales et coordonnées de Nexform.' },
+  },
+  form: {
+    urlLabel: 'Adresse de votre site',
+    nameLabel: 'Votre nom',
+    emailLabel: 'E-mail professionnel',
+    continue: 'Lancer l’analyse',
+    submit: 'Envoyer pour analyse',
+    edit: 'Modifier l’URL',
+    statuses: ['Lecture du site…', 'Vérification de la vitesse…', 'Analyse mobile…'],
+    invalidUrl: 'Saisissez une adresse complète, par exemple votresite.fr.',
+    invalidName: 'Indiquez le nom de la personne à contacter.',
+    invalidEmail: 'Saisissez une adresse e-mail valide.',
+    missingEndpoint: 'La boîte de réception du formulaire n’est pas encore connectée.',
+    networkError: 'La demande n’a pas été envoyée. Vérifiez votre connexion et réessayez.',
+    successTitle: 'Votre site a bien été envoyé.',
+    successCopy: 'Nous allons l’examiner et revenir vers vous rapidement.',
+  },
+  privacy: {
+    title: 'Confidentialité',
+    intro: 'Cette page décrit le traitement prévu des données. Les informations relatives au responsable doivent être complétées avant le lancement commercial.',
+    sections: [
+      { title: 'Analyse de site', copy: 'Le formulaire recueille l’adresse du site, le nom et l’adresse e-mail uniquement afin de préparer et transmettre l’analyse demandée. Le prestataire du formulaire, la durée de conservation et les informations du sous-traitant restent à confirmer.' },
+      { title: 'Mesure d’audience', copy: 'Le site est prévu pour utiliser Plausible, une solution de mesure respectueuse de la vie privée et sans cookies publicitaires. Le domaine d’analyse reste à confirmer.' },
+      { title: 'Vos droits', copy: 'Les coordonnées du responsable ainsi que la procédure d’accès, de rectification ou de suppression seront indiquées avant le lancement.' },
+    ],
+  },
+  legal: {
+    title: 'Mentions légales',
+    intro: 'Nexform n’est pas encore immatriculée. Les informations suivantes doivent être complétées avant le premier lancement commercial ou la première facture.',
+    rows: [
+      { label: 'Entité juridique', value: '[À compléter : raison sociale]' },
+      { label: 'Adresse', value: '[À compléter : adresse complète]' },
+      { label: 'Numéro d’immatriculation', value: '[À compléter]' },
+      { label: 'Numéro de TVA', value: '[À compléter]' },
+      { label: 'E-mail', value: '[À compléter : adresse e-mail]' },
+      { label: 'Téléphone', value: '[À compléter : numéro de téléphone]' },
+    ],
+  },
+  footer: {
+    claim: 'Des sites web qui font leur travail.',
+    location: 'Sites web · Suivi · Meta Ads',
+    privacy: 'Confidentialité',
+    legal: 'Mentions légales',
+    todo: 'Coordonnées et informations légales à compléter',
+  },
+};
+
+export const content: Record<PublishedLocale, Content> = { en, de, nl, fr };
 
 export const getContent = (locale: PublishedLocale): Content => content[locale];

@@ -12,7 +12,13 @@ const { locale, id, compact = false } = Astro.props;
 const copy = getContent(locale);
 const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
 const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY || '';
-const placeholders = ['yourwebsite.com', 'bakkerij-jansen.nl', 'physio-mueller.de'];
+const placeholderSets: Record<PublishedLocale, string[]> = {
+  en: ['yourwebsite.com', 'yourcompany.com', 'yourstudio.com'],
+  de: ['ihrewebsite.de', 'ihrbetrieb.de', 'ihrstudio.de'],
+  nl: ['jouwwebsite.nl', 'jouwbedrijf.nl', 'jouwstudio.nl'],
+  fr: ['votresite.fr', 'votreentreprise.fr', 'votrestudio.fr'],
+};
+const placeholders = placeholderSets[locale];
 ---
 
 <form

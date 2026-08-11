@@ -1,5 +1,5 @@
 export const locales = ['en', 'de', 'nl', 'fr', 'es'] as const;
-export const publishedLocales = ['en', 'de', 'nl'] as const;
+export const publishedLocales = ['en', 'de', 'nl', 'fr'] as const;
 
 export type Locale = (typeof locales)[number];
 export type PublishedLocale = (typeof publishedLocales)[number];
@@ -37,6 +37,14 @@ export const routes: Record<PublishedLocale, Record<PageKey, string>> = {
     method: '/nl/werkwijze/',
     privacy: '/nl/privacy/',
     legal: '/nl/bedrijfsgegevens/',
+  },
+  fr: {
+    home: '/fr/',
+    services: '/fr/services/',
+    work: '/fr/realisations/',
+    method: '/fr/methode/',
+    privacy: '/fr/confidentialite/',
+    legal: '/fr/mentions-legales/',
   },
 };
 

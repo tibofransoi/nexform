@@ -152,4 +152,50 @@ export const landingCopy: Record<PublishedLocale, LandingCopy> = {
       missing: 'De contactinbox is nog niet gekoppeld.',
     },
   },
+  fr: {
+    hero: {
+      title: 'Des sites web qui font leur travail.',
+      lead: 'Nous concevons des sites clairs et rapides pour les petites entreprises. Meta Ads et suivi continu si nécessaire.',
+      primary: 'Nous contacter',
+      secondary: 'En savoir plus',
+    },
+    audit: { title: 'Besoin d’un second avis ?', copy: 'Envoyez votre site. Nous l’examinerons et vous indiquerons les principaux points à corriger.' },
+    services: {
+      title: 'Ce que nous faisons',
+      items: [
+        { title: 'Conception et création de site', copy: 'Stratégie, textes, design et développement dans un seul projet.' },
+        { title: 'Suivi du site', copy: 'Hébergement, mises à jour et améliorations utiles après la mise en ligne.' },
+        { title: 'Meta Ads', copy: 'Mise en place, créations publicitaires et gestion continue des campagnes.' },
+      ],
+    },
+    work: {
+      title: 'Exemples de sites',
+      items: [
+        { image: '/images/work-architecture.jpg', label: 'Services professionnels', title: 'Architecture' },
+        { image: '/images/work-bakery.jpg', label: 'Restauration', title: 'Boulangerie et café' },
+        { image: '/images/work-physio.jpg', label: 'Santé', title: 'Kinésithérapie' },
+        { image: '/images/work-construction.jpg', label: 'Bâtiment', title: 'Construction' },
+      ],
+    },
+    process: {
+      title: 'Notre méthode',
+      items: [
+        { title: 'Cadrage', copy: 'Nous définissons l’objectif, les pages et les livrables.' },
+        { title: 'Design et développement', copy: 'Vous validez des versions concrètes au fil du projet.' },
+        { title: 'Mise en ligne et amélioration', copy: 'Nous publions, mesurons et gérons les étapes suivantes.' },
+      ],
+    },
+    final: {
+      title: 'Vous avez un projet ?',
+      copy: 'Envoyez-nous votre site ou un court brief. Nous vous proposerons une prochaine étape concrète.',
+      primary: 'Analyser mon site',
+      secondary: 'Voir les exemples',
+    },
+    contact: {
+      title: 'Nous contacter', copy: 'Expliquez-nous brièvement ce dont vous avez besoin.', name: 'Nom', email: 'E-mail',
+      website: 'Site web (facultatif)', message: 'Comment pouvons-nous vous aider ?', submit: 'Envoyer la demande', sending: 'Envoi…',
+      success: 'Merci. Nous reviendrons vers vous rapidement.', error: 'Une erreur est survenue. Veuillez réessayer.',
+      missing: 'La boîte de réception du formulaire n’est pas encore connectée.',
+    },
+  },
 };

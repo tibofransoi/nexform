@@ -1,3 +1,5 @@
 ---
-return Astro.redirect('/en/', 302);
+import { routeFor } from '../i18n/config';
+
+return Astro.redirect(routeFor('en', 'home'), 302);
 ---

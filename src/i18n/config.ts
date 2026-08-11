@@ -47,4 +47,6 @@ export const localeFromUrl = (pathname: string): PublishedLocale => {
     : 'en';
 };
 
-export const routeFor = (locale: PublishedLocale, page: PageKey) => routes[locale][page];
+const basePath = import.meta.env.BASE_URL === '/' ? '' : import.meta.env.BASE_URL.replace(/\/$/, '');
+
+export const routeFor = (locale: PublishedLocale, page: PageKey) => `${basePath}${routes[locale][page]}`;

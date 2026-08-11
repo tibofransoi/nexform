@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import WebsiteCheck from '../../components/WebsiteCheck.astro';
+import ContactForm from '../../components/ContactForm.astro';
 import { getContent } from '../../content/site';
 import { landingCopy } from '../../content/landing';
 import { publishedLocales, type PublishedLocale } from '../../i18n/config';
@@ -23,8 +24,8 @@ const copy = landingCopy[locale];
       <h1 id="hero-title">{copy.hero.title}</h1>
       <p>{copy.hero.lead}</p>
       <div class="one-actions">
-        <a class="button button-primary" href="#work">{copy.hero.primary}<span aria-hidden="true">→</span></a>
-        <a class="button button-secondary" href="#website-check">{copy.hero.secondary}</a>
+        <a class="button button-primary" href="#contact">{copy.hero.primary}<span aria-hidden="true">→</span></a>
+        <a class="button button-secondary" href="#services">{copy.hero.secondary}</a>
       </div>
     </section>
 
@@ -50,24 +51,20 @@ const copy = landingCopy[locale];
     </section>
 
     <section class="one-section one-work" id="work" aria-labelledby="work-title">
-      <div class="shell">
+      <div class="shell one-work-heading">
         <h2 id="work-title">{copy.work.title}</h2>
-        <div class="one-work-grid">
-          {copy.work.items.map((item) => (
-            <article class:list={['one-case', `one-case-${item.type}`]}>
-              <div class="one-case-visual" aria-hidden="true">
-                {item.type === 'site' ? (
-                  <div class="demo-browser"><span></span><strong>NEX/FORM</strong><i></i><i></i></div>
-                ) : (
-                  <div class="demo-campaign"><strong>META</strong><span>01</span><span>02</span><span>03</span></div>
-                )}
-              </div>
-              <div class="one-case-copy">
-                <span>{item.label}</span>
-                <h3>{item.title}</h3>
-                <p>{item.copy}</p>
-              </div>
-            </article>
+      </div>
+      <div class="work-marquee" aria-label={copy.work.title}>
+        <div class="work-track">
+          {[0, 1].map((group) => (
+            <div class="work-group" aria-hidden={group === 1 ? 'true' : undefined}>
+              {copy.work.items.map((item) => (
+                <article class="work-slide">
+                  <img src={`${import.meta.env.BASE_URL}${item.image.replace(/^\//, '')}`} alt="" loading="lazy" width="1536" height="1024" />
+                  <div><span>{item.label}</span><h3>{item.title}</h3></div>
+                </article>
+              ))}
+            </div>
           ))}
         </div>
       </div>
@@ -82,14 +79,13 @@ const copy = landingCopy[locale];
       </ol>
     </section>
 
-    <section class="one-final" aria-labelledby="final-title">
-      <div class="shell">
-        <h2 id="final-title">{copy.final.title}</h2>
-        <p>{copy.final.copy}</p>
-        <div class="one-actions">
-          <a class="button button-light" href="#website-check">{copy.final.primary}<span aria-hidden="true">→</span></a>
-          <a class="one-text-link" href="#work">{copy.final.secondary}</a>
+    <section class="one-final" id="contact" aria-labelledby="contact-title">
+      <div class="shell one-contact-grid">
+        <div>
+          <h2 id="contact-title">{copy.contact.title}</h2>
+          <p>{copy.contact.copy}</p>
         </div>
+        <ContactForm locale={locale} />
       </div>
     </section>
   </div>

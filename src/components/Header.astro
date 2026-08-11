@@ -1,6 +1,7 @@
 ---
 import { localeLabels, publishedLocales, routeFor, type PageKey, type PublishedLocale } from '../i18n/config';
 import { getContent } from '../content/site';
+import { landingCopy } from '../content/landing';
 
 interface Props {
   locale: PublishedLocale;
@@ -9,7 +10,8 @@ interface Props {
 
 const { locale, page } = Astro.props;
 const copy = getContent(locale);
-const auditHref = `${routeFor(locale, 'home')}#website-check`;
+const contactHref = `${routeFor(locale, 'home')}#contact`;
+const contactLabel = landingCopy[locale].hero.primary;
 const navItems = [
   { key: 'work' as const, label: copy.nav.work, href: `${routeFor(locale, 'home')}#work` },
   { key: 'services' as const, label: copy.nav.services, href: `${routeFor(locale, 'home')}#services` },
@@ -45,8 +47,8 @@ const navItems = [
           ))}
         </div>
       </div>
-      <a class="button button-small button-primary nav-cta" href={auditHref}>
-        <span>{copy.cta.audit}</span><span class="button-arrow" aria-hidden="true">→</span>
+      <a class="button button-small button-primary nav-cta" href={contactHref}>
+        <span>{contactLabel}</span><span class="button-arrow" aria-hidden="true">→</span>
       </a>
       <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -62,7 +64,7 @@ const navItems = [
       {navItems.map((item, index) => (
         <a href={item.href} style={`--menu-index:${index}`}>{item.label}</a>
       ))}
-      <a href={auditHref} style="--menu-index:3">{copy.cta.audit}</a>
+      <a href={contactHref} style="--menu-index:3">{contactLabel}</a>
     </nav>
     <div class="mobile-languages">
       {publishedLocales.map((code) => <a href={routeFor(code, page)} lang={code}>{code.toUpperCase()}</a>)}

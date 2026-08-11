@@ -4,12 +4,13 @@ type LandingCopy = {
   hero: { title: string; lead: string; primary: string; secondary: string };
   audit: { title: string; copy: string };
   services: { title: string; items: Array<{ title: string; copy: string }> };
-  work: {
-    title: string;
-    items: Array<{ type: 'site' | 'campaign'; label: string; title: string; copy: string }>;
-  };
+  work: { title: string; items: Array<{ image: string; label: string; title: string }> };
   process: { title: string; items: Array<{ title: string; copy: string }> };
   final: { title: string; copy: string; primary: string; secondary: string };
+  contact: {
+    title: string; copy: string; name: string; email: string; website: string; message: string;
+    submit: string; sending: string; success: string; error: string; missing: string;
+  };
 };
 
 export const landingCopy: Record<PublishedLocale, LandingCopy> = {
@@ -17,8 +18,8 @@ export const landingCopy: Record<PublishedLocale, LandingCopy> = {
     hero: {
       title: 'Websites that do their job.',
       lead: 'We design and build clear, fast websites for small businesses. Meta Ads and ongoing support when needed.',
-      primary: 'View our work',
-      secondary: 'Check my website',
+      primary: 'Contact us',
+      secondary: 'Find out more',
     },
     audit: { title: 'Want a second opinion?', copy: 'Send your website. We’ll review it and reply with the main issues.' },
     services: {
@@ -30,10 +31,12 @@ export const landingCopy: Record<PublishedLocale, LandingCopy> = {
       ],
     },
     work: {
-      title: 'Selected work',
+      title: 'Website examples',
       items: [
-        { type: 'site', label: 'Website', title: 'Nexform', copy: 'Positioning, copy, design and multilingual build.' },
-        { type: 'campaign', label: 'Confidential project', title: 'Childcare campaign', copy: 'Campaign structure, creative direction and landing flow.' },
+        { image: '/images/work-architecture.jpg', label: 'Professional services', title: 'Architecture' },
+        { image: '/images/work-bakery.jpg', label: 'Hospitality', title: 'Bakery and café' },
+        { image: '/images/work-physio.jpg', label: 'Healthcare', title: 'Physiotherapy' },
+        { image: '/images/work-construction.jpg', label: 'Building services', title: 'Construction' },
       ],
     },
     process: {
@@ -50,13 +53,19 @@ export const landingCopy: Record<PublishedLocale, LandingCopy> = {
       primary: 'Check my website',
       secondary: 'View our work',
     },
+    contact: {
+      title: 'Contact us', copy: 'Tell us what you need. A short message is enough.', name: 'Name', email: 'Email',
+      website: 'Website (optional)', message: 'What can we help with?', submit: 'Send enquiry', sending: 'Sending…',
+      success: 'Thanks. We’ll get back to you shortly.', error: 'Something went wrong. Please try again.',
+      missing: 'The contact inbox is not connected yet.',
+    },
   },
   de: {
     hero: {
       title: 'Websites, die ihren Zweck erfüllen.',
       lead: 'Wir konzipieren und bauen klare, schnelle Websites für kleine Unternehmen. Meta Ads und laufende Betreuung bei Bedarf.',
-      primary: 'Arbeiten ansehen',
-      secondary: 'Website prüfen lassen',
+      primary: 'Kontakt aufnehmen',
+      secondary: 'Mehr erfahren',
     },
     audit: { title: 'Eine zweite Meinung?', copy: 'Senden Sie uns Ihre Website. Wir prüfen sie und nennen die wichtigsten Punkte.' },
     services: {
@@ -68,10 +77,12 @@ export const landingCopy: Record<PublishedLocale, LandingCopy> = {
       ],
     },
     work: {
-      title: 'Ausgewählte Arbeiten',
+      title: 'Website-Beispiele',
       items: [
-        { type: 'site', label: 'Website', title: 'Nexform', copy: 'Positionierung, Texte, Design und mehrsprachige Umsetzung.' },
-        { type: 'campaign', label: 'Vertrauliches Projekt', title: 'Kita-Kampagne', copy: 'Kampagnenstruktur, Creative Direction und Landing-Flow.' },
+        { image: '/images/work-architecture.jpg', label: 'Dienstleistungen', title: 'Architektur' },
+        { image: '/images/work-bakery.jpg', label: 'Gastronomie', title: 'Bäckerei und Café' },
+        { image: '/images/work-physio.jpg', label: 'Gesundheit', title: 'Physiotherapie' },
+        { image: '/images/work-construction.jpg', label: 'Baugewerbe', title: 'Bauunternehmen' },
       ],
     },
     process: {
@@ -88,13 +99,19 @@ export const landingCopy: Record<PublishedLocale, LandingCopy> = {
       primary: 'Website prüfen lassen',
       secondary: 'Arbeiten ansehen',
     },
+    contact: {
+      title: 'Kontakt', copy: 'Beschreiben Sie kurz, was Sie brauchen.', name: 'Name', email: 'E-Mail',
+      website: 'Website (optional)', message: 'Wobei können wir helfen?', submit: 'Anfrage senden', sending: 'Wird gesendet…',
+      success: 'Vielen Dank. Wir melden uns in Kürze.', error: 'Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.',
+      missing: 'Der Kontakt-Posteingang ist noch nicht verbunden.',
+    },
   },
   nl: {
     hero: {
       title: 'Websites die doen wat ze moeten doen.',
       lead: 'We ontwerpen en bouwen duidelijke, snelle websites voor kleine bedrijven. Meta Ads en doorlopende ondersteuning waar nodig.',
-      primary: 'Bekijk ons werk',
-      secondary: 'Laat mijn website checken',
+      primary: 'Neem contact op',
+      secondary: 'Meer informatie',
     },
     audit: { title: 'Een tweede mening?', copy: 'Stuur je website. We bekijken hem en noemen de belangrijkste punten.' },
     services: {
@@ -106,10 +123,12 @@ export const landingCopy: Record<PublishedLocale, LandingCopy> = {
       ],
     },
     work: {
-      title: 'Geselecteerd werk',
+      title: 'Websitevoorbeelden',
       items: [
-        { type: 'site', label: 'Website', title: 'Nexform', copy: 'Positionering, tekst, ontwerp en meertalige bouw.' },
-        { type: 'campaign', label: 'Vertrouwelijk project', title: 'Kinderopvangcampagne', copy: 'Campagnestructuur, creatieve richting en landingsflow.' },
+        { image: '/images/work-architecture.jpg', label: 'Zakelijke dienstverlening', title: 'Architectuur' },
+        { image: '/images/work-bakery.jpg', label: 'Horeca', title: 'Bakkerij en café' },
+        { image: '/images/work-physio.jpg', label: 'Zorg', title: 'Fysiotherapie' },
+        { image: '/images/work-construction.jpg', label: 'Bouwdiensten', title: 'Bouwbedrijf' },
       ],
     },
     process: {
@@ -125,6 +144,12 @@ export const landingCopy: Record<PublishedLocale, LandingCopy> = {
       copy: 'Stuur je website of een korte briefing. We stellen een praktische volgende stap voor.',
       primary: 'Laat mijn website checken',
       secondary: 'Bekijk ons werk',
+    },
+    contact: {
+      title: 'Neem contact op', copy: 'Vertel kort wat je nodig hebt.', name: 'Naam', email: 'E-mail',
+      website: 'Website (optioneel)', message: 'Waar kunnen we mee helpen?', submit: 'Aanvraag versturen', sending: 'Versturen…',
+      success: 'Bedankt. We nemen snel contact op.', error: 'Er ging iets mis. Probeer het opnieuw.',
+      missing: 'De contactinbox is nog niet gekoppeld.',
     },
   },
 };

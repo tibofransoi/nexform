@@ -24,6 +24,8 @@ jobs:
         uses: withastro/action@v3
         env:
           GITHUB_PAGES: "true"
+          PUBLIC_FORM_ENDPOINT: ${{ secrets.PUBLIC_FORM_ENDPOINT }}
+          PUBLIC_WEB3FORMS_KEY: ${{ secrets.PUBLIC_WEB3FORMS_KEY }}
 
   deploy:
     environment:

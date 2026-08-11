@@ -200,12 +200,12 @@ const placeholders = ['yourwebsite.com', 'bakkerij-jansen.nl', 'physio-mueller.d
 
         const endpoint = form.dataset.endpoint;
         const accessKey = form.dataset.accessKey;
-        if (!endpoint || !accessKey) return showError(errors.endpoint);
+        if (!endpoint) return showError(errors.endpoint);
 
         form.classList.add('is-submitting');
         const body = new FormData(form);
         body.set('website', url);
-        body.set('access_key', accessKey);
+        if (accessKey) body.set('access_key', accessKey);
         body.set('subject', `Nexform Website Check — ${new URL(url).hostname}`);
         body.set('from_name', 'Nexform Website Check');
 

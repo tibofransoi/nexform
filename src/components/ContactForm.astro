@@ -1,0 +1,79 @@
+---
+import type { PublishedLocale } from '../i18n/config';
+import { landingCopy } from '../content/landing';
+
+interface Props { locale: PublishedLocale }
+const { locale } = Astro.props;
+const copy = landingCopy[locale].contact;
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
+const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY || '';
+---
+
+<form
+  class="contact-form"
+  data-contact-form
+  data-endpoint={endpoint}
+  data-access-key={accessKey}
+  data-sending={copy.sending}
+  data-success={copy.success}
+  data-error={copy.error}
+  data-missing={copy.missing}
+  novalidate
+>
+  <label><span>{copy.name}</span><input name="name" type="text" autocomplete="name" required /></label>
+  <label><span>{copy.email}</span><input name="email" type="email" autocomplete="email" inputmode="email" required /></label>
+  <label><span>{copy.website}</span><input name="website" type="url" autocomplete="url" inputmode="url" /></label>
+  <label><span>{copy.message}</span><textarea name="message" rows="4" required></textarea></label>
+  <input class="honeypot" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
+  <button class="button button-primary" type="submit"><span>{copy.submit}</span><span aria-hidden="true">→</span></button>
+  <p class="contact-form-status" role="status" aria-live="polite" data-contact-status></p>
+</form>
+
+<script>
+  const initContactForms = () => {
+    document.querySelectorAll('[data-contact-form]').forEach((form) => {
+      if (!(form instanceof HTMLFormElement) || form.dataset.initialised === 'true') return;
+      form.dataset.initialised = 'true';
+      const button = form.querySelector('button[type="submit"]');
+      const buttonLabel = button?.querySelector('span');
+      const status = form.querySelector('[data-contact-status]');
+      const defaultLabel = buttonLabel?.textContent || '';
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!form.reportValidity()) return;
+        const endpoint = form.dataset.endpoint || '';
+        if (!endpoint) {
+          if (status) status.textContent = form.dataset.missing || '';
+          return;
+        }
+
+        if (button instanceof HTMLButtonElement) button.disabled = true;
+        if (buttonLabel) buttonLabel.textContent = form.dataset.sending || defaultLabel;
+        if (status) status.textContent = '';
+
+        const body = new FormData(form);
+        if (form.dataset.accessKey) body.set('access_key', form.dataset.accessKey);
+        body.set('subject', 'New Nexform website enquiry');
+        body.set('from_name', 'Nexform website');
+
+        try {
+          const response = await fetch(endpoint, { method: 'POST', body, headers: { Accept: 'application/json' } });
+          const payload = await response.json().catch(() => ({})) as { success?: boolean };
+          if (!response.ok || payload.success === false) throw new Error('Request failed');
+          form.reset();
+          if (status) status.textContent = form.dataset.success || '';
+          window.dispatchEvent(new CustomEvent('nexform:conversion', { detail: { name: 'contact_submit' } }));
+        } catch {
+          if (status) status.textContent = form.dataset.error || '';
+        } finally {
+          if (button instanceof HTMLButtonElement) button.disabled = false;
+          if (buttonLabel) buttonLabel.textContent = defaultLabel;
+        }
+      });
+    });
+  };
+
+  document.addEventListener('astro:page-load', initContactForms);
+  initContactForms();
+</script>

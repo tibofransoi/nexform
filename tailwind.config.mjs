@@ -13,7 +13,7 @@ export default {
         fault: '#C93B34',
       },
       fontFamily: {
-        display: ['Syne', 'Arial Black', 'sans-serif'],
+        display: ['IBM Plex Sans', 'Arial', 'sans-serif'],
         body: ['IBM Plex Sans', 'Arial', 'sans-serif'],
       },
       fontSize: {

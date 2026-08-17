@@ -1,0 +1,89 @@
+---
+import { demos, type Demo } from '../../content/demos';
+import '../../styles/demo.css';
+
+export function getStaticPaths() {
+  return demos.map((demo) => ({ params: { slug: demo.slug }, props: { demo } }));
+}
+
+interface Props { demo: Demo }
+const { demo } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const image = `${base}${demo.image.replace(/^\//, '')}`;
+const nexform = `${base}en/#work`;
+const style = `--demo-bg:${demo.theme.background};--demo-surface:${demo.theme.surface};--demo-ink:${demo.theme.ink};--demo-accent:${demo.theme.accent};--demo-image-position:${demo.imagePosition}`;
+---
+
+<!doctype html>
+<html lang="en" style={style}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{demo.name} — Nexform live demo</title>
+    <meta name="description" content={`${demo.name}: a functioning website demo designed and built by Nexform.`} />
+  </head>
+  <body class="demo-site">
+    <div class="demo-notice"><span>Nexform live demo</span><a href={nexform}>Back to Nexform</a></div>
+    <header class="demo-header demo-shell">
+      <a class="demo-logo" href="#top">{demo.name}</a>
+      <nav aria-label="Primary navigation">
+        <a href="#services">Services</a><a href="#projects">Projects</a><a href="#about">About</a>
+      </nav>
+      <a class="demo-button demo-button-small" href="#contact">{demo.cta}</a>
+    </header>
+
+    <main id="top">
+      <section class="demo-hero demo-shell">
+        <div class="demo-hero-copy">
+          <p class="demo-kicker">{demo.sector}</p>
+          <h1>{demo.headline}</h1>
+          <p class="demo-lead">{demo.lead}</p>
+          <a class="demo-button" href="#contact">{demo.cta}<span aria-hidden="true">→</span></a>
+        </div>
+        <div class="demo-hero-image"><img src={image} alt="" width="1536" height="1024" /></div>
+      </section>
+
+      <section class="demo-trust" aria-label="Approach">
+        <div class="demo-shell"><span>Clear scope</span><span>Considered design</span><span>Practical delivery</span></div>
+      </section>
+
+      <section class="demo-section demo-shell" id="services">
+        <div class="demo-section-heading"><p>Services</p><h2>Focused work, clearly explained.</h2></div>
+        <div class="demo-services">
+          {demo.services.map((service, index) => (
+            <article><span>0{index + 1}</span><h3>{service.title}</h3><p>{service.copy}</p></article>
+          ))}
+        </div>
+      </section>
+
+      <section class="demo-projects" id="projects">
+        <div class="demo-shell">
+          <div class="demo-section-heading"><p>Selected projects</p><h2>Recent work.</h2></div>
+          <div class="demo-project-grid">
+            {demo.projects.map((project, index) => (
+              <article>
+                <div class={`demo-project-image demo-crop-${index + 1}`}><img src={image} alt="" loading="lazy" width="1536" height="1024" /></div>
+                <p>{project}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-statement demo-shell" id="about">
+        <p>Our approach</p><h2>{demo.statement}</h2>
+      </section>
+
+      <section class="demo-contact" id="contact">
+        <div class="demo-shell">
+          <p>Start a conversation</p>
+          <h2>Tell us what you are planning.</h2>
+          <a class="demo-button demo-button-light" href={nexform}>Contact Nexform<span aria-hidden="true">→</span></a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="demo-footer demo-shell"><span>{demo.name}</span><span>Website demo by Nexform</span></footer>
+  </body>
+</html>

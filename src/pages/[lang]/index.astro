@@ -59,10 +59,10 @@ const copy = landingCopy[locale];
           {[0, 1].map((group) => (
             <div class="work-group" aria-hidden={group === 1 ? 'true' : undefined}>
               {copy.work.items.map((item) => (
-                <article class="work-slide">
+                <a class="work-slide" href={`${import.meta.env.BASE_URL}demos/${item.slug}/`} aria-label={`${item.title} — ${item.label}`}>
                   <img src={`${import.meta.env.BASE_URL}${item.image.replace(/^\//, '')}`} alt="" loading="lazy" width="1536" height="1024" />
-                  <div><span>{item.label}</span><h3>{item.title}</h3></div>
-                </article>
+                  <div><span>{item.label}</span><h3>{item.title} <i aria-hidden="true">↗</i></h3></div>
+                </a>
               ))}
             </div>
           ))}

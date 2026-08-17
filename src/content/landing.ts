@@ -4,7 +4,7 @@ type LandingCopy = {
   hero: { title: string; lead: string; primary: string; secondary: string };
   audit: { title: string; copy: string };
   services: { title: string; items: Array<{ title: string; copy: string }> };
-  work: { title: string; items: Array<{ image: string; label: string; title: string }> };
+  work: { title: string; items: Array<{ slug: string; image: string; label: string; title: string }> };
   process: { title: string; items: Array<{ title: string; copy: string }> };
   final: { title: string; copy: string; primary: string; secondary: string };
   contact: {
@@ -33,10 +33,10 @@ export const landingCopy: Record<PublishedLocale, LandingCopy> = {
     work: {
       title: 'Website examples',
       items: [
-        { image: '/images/work-architecture.jpg', label: 'Professional services', title: 'Architecture' },
-        { image: '/images/work-bakery.jpg', label: 'Hospitality', title: 'Bakery and café' },
-        { image: '/images/work-physio.jpg', label: 'Healthcare', title: 'Physiotherapy' },
-        { image: '/images/work-construction.jpg', label: 'Building services', title: 'Construction' },
+        { slug: 'architecture', image: '/images/work-architecture.jpg', label: 'Live demo · Professional services', title: 'Architecture' },
+        { slug: 'bakery', image: '/images/work-bakery.jpg', label: 'Live demo · Hospitality', title: 'Bakery and café' },
+        { slug: 'physio', image: '/images/work-physio.jpg', label: 'Live demo · Healthcare', title: 'Physiotherapy' },
+        { slug: 'construction', image: '/images/work-construction.jpg', label: 'Live demo · Building services', title: 'Construction' },
       ],
     },
     process: {
@@ -79,10 +79,10 @@ export const landingCopy: Record<PublishedLocale, LandingCopy> = {
     work: {
       title: 'Website-Beispiele',
       items: [
-        { image: '/images/work-architecture.jpg', label: 'Dienstleistungen', title: 'Architektur' },
-        { image: '/images/work-bakery.jpg', label: 'Gastronomie', title: 'Bäckerei und Café' },
-        { image: '/images/work-physio.jpg', label: 'Gesundheit', title: 'Physiotherapie' },
-        { image: '/images/work-construction.jpg', label: 'Baugewerbe', title: 'Bauunternehmen' },
+        { slug: 'architecture', image: '/images/work-architecture.jpg', label: 'Live-Demo · Dienstleistungen', title: 'Architektur' },
+        { slug: 'bakery', image: '/images/work-bakery.jpg', label: 'Live-Demo · Gastronomie', title: 'Bäckerei und Café' },
+        { slug: 'physio', image: '/images/work-physio.jpg', label: 'Live-Demo · Gesundheit', title: 'Physiotherapie' },
+        { slug: 'construction', image: '/images/work-construction.jpg', label: 'Live-Demo · Baugewerbe', title: 'Bauunternehmen' },
       ],
     },
     process: {
@@ -125,10 +125,10 @@ export const landingCopy: Record<PublishedLocale, LandingCopy> = {
     work: {
       title: 'Websitevoorbeelden',
       items: [
-        { image: '/images/work-architecture.jpg', label: 'Zakelijke dienstverlening', title: 'Architectuur' },
-        { image: '/images/work-bakery.jpg', label: 'Horeca', title: 'Bakkerij en café' },
-        { image: '/images/work-physio.jpg', label: 'Zorg', title: 'Fysiotherapie' },
-        { image: '/images/work-construction.jpg', label: 'Bouwdiensten', title: 'Bouwbedrijf' },
+        { slug: 'architecture', image: '/images/work-architecture.jpg', label: 'Live demo · Zakelijke diensten', title: 'Architectuur' },
+        { slug: 'bakery', image: '/images/work-bakery.jpg', label: 'Live demo · Horeca', title: 'Bakkerij en café' },
+        { slug: 'physio', image: '/images/work-physio.jpg', label: 'Live demo · Zorg', title: 'Fysiotherapie' },
+        { slug: 'construction', image: '/images/work-construction.jpg', label: 'Live demo · Bouwdiensten', title: 'Bouwbedrijf' },
       ],
     },
     process: {
@@ -171,10 +171,10 @@ export const landingCopy: Record<PublishedLocale, LandingCopy> = {
     work: {
       title: 'Exemples de sites',
       items: [
-        { image: '/images/work-architecture.jpg', label: 'Services professionnels', title: 'Architecture' },
-        { image: '/images/work-bakery.jpg', label: 'Restauration', title: 'Boulangerie et café' },
-        { image: '/images/work-physio.jpg', label: 'Santé', title: 'Kinésithérapie' },
-        { image: '/images/work-construction.jpg', label: 'Bâtiment', title: 'Construction' },
+        { slug: 'architecture', image: '/images/work-architecture.jpg', label: 'Démo en ligne · Services professionnels', title: 'Architecture' },
+        { slug: 'bakery', image: '/images/work-bakery.jpg', label: 'Démo en ligne · Restauration', title: 'Boulangerie et café' },
+        { slug: 'physio', image: '/images/work-physio.jpg', label: 'Démo en ligne · Santé', title: 'Kinésithérapie' },
+        { slug: 'construction', image: '/images/work-construction.jpg', label: 'Démo en ligne · Bâtiment', title: 'Construction' },
       ],
     },
     process: {
